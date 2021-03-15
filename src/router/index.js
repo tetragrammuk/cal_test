@@ -7,7 +7,7 @@ import bind from '@/components/bind'
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
-  // base: process.env.NODE_ENV === 'production' ? '/tool/index/' : '/index/',
+  base: '/tool/',
   routes: [
     {
       path: '/HelloWorld',
