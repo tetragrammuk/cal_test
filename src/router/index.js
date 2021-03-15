@@ -7,7 +7,7 @@ import bind from '@/components/bind'
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
-  base: '/tool/',
+  base: '/cal/',
   routes: [
     {
       path: '/HelloWorld',
