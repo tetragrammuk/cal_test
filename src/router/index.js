@@ -9,6 +9,10 @@ const router = new Router({
   mode: 'history',
   base: '/cal/',
   routes: [
+	{
+		path: '',
+		redirect: '/HelloWorld',
+	},
     {
       path: '/HelloWorld',
       name: 'HelloWorld',
