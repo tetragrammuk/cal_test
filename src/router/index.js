@@ -27,7 +27,7 @@ const router = new Router({
       component: bind
     },
     {
-      path: '/tool/:id',
+      path: '/tool',
       name: 'calculator',
       meta: {
         title: "小工具"
