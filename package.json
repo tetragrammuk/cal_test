@@ -17,6 +17,7 @@
     "bootstrap-vue": "^2.20.1",
     "update": "^0.7.4",
     "vue": "^2.6.12",
+    "vue-multiselect": "^2.1.6",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
