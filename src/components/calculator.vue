@@ -30,6 +30,7 @@
               <multiselect
                 class="incomePage_10 blue_box"
                 v-model="form2.list"
+                :hideSelected="true"
                 :options="options"
                 :multiple="true"
                 :searchable="false"
@@ -61,13 +62,14 @@
                 v-model="form2.date"
                 label="name"
                 track-by="code"
+                :hideSelected="true"
                 :searchable="false"
                 :selectLabel="''"
                 :selectGroupLabel="''"
                 :deselectLabel="''"
                 :deselectGroupLabel="''"
                 :options="optionsDate"
-                :multiple="true"
+                :multiple="false"
                 :closeOnSelect="false"
               ></multiselect>
 
@@ -87,6 +89,7 @@
                 v-model="form2.cost"
                 label="name"
                 track-by="code"
+                :hideSelected="true"
                 :searchable="false"
                 :selectLabel="''"
                 :selectGroupLabel="''"
