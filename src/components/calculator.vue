@@ -1,7 +1,8 @@
 <template>
-  <div class="fillcontain">
+  <div class="fillcontain" id="fillcontain">
     <b-card no-body>
-      <h1 style="margin-bottom:2.5rem;margin-top:1rem">設定清單條件</h1>
+      <h1 style="margin-top:1rem" id="welcome"></h1>
+      <h1 style="margin-bottom:2.5rem;">請設定清單條件</h1>
       <div class="incomePage">
         <b-form class="form2" ref="form2" :model="form2">
           <b-form-group
@@ -13,18 +14,16 @@
             <b-col>
               <b-form-input
                 class="incomePage_5 blue_box"
-                :state="nameState"
-                aria-describedby="input-live-feedback"
+                placeholder="請輸入清單名稱"
                 v-model="form2.listName"
                 @change="clear()"
               ></b-form-input>
-              <b-form-invalid-feedback id="input-live-feedback">請輸入清單名稱</b-form-invalid-feedback>
             </b-col>
           </b-form-group>
           <b-form-group
             label-size="lg"
             label-class="font-weight-bold"
-            label="選擇協會"
+            :label="this.$route.params.id == 'online'? '選擇APP':'選擇協會'"
             label-for="incomePage_10"
           >
             <b-col>
@@ -33,17 +32,20 @@
                 v-model="form2.list"
                 :options="options"
                 :multiple="true"
+                :selectLabel="''"
+                :selectGroupLabel="''"
+                :deselectLabel="''"
+                :deselectGroupLabel="''"
                 group-values="libs"
-                group-label="language"
+                group-label="location"
                 :group-select="true"
                 :closeOnSelect="false"
-                placeholder="Type to search"
-                track-by="name"
-                label="name"
+                track-by="brand_key"
+                label="brand_key"
               >
                 <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
               </multiselect>
-              <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
+              <!-- <pre class="language-json"><code>{{ form2.list  }}</code></pre> -->
             </b-col>
           </b-form-group>
           <b-form-group
@@ -58,9 +60,38 @@
                 v-model="form2.date"
                 label="name"
                 track-by="code"
+                :selectLabel="''"
+                :selectGroupLabel="''"
+                :deselectLabel="''"
+                :deselectGroupLabel="''"
                 :options="optionsDate"
                 :multiple="true"
-				:closeOnSelect="false"
+                :closeOnSelect="false"
+              ></multiselect>
+
+              <!-- <pre class="language-json"><code>{{ form2.date  }}</code></pre> -->
+            </b-col>
+          </b-form-group>
+          <b-form-group
+            v-if="this.$route.params.id == 'online'"
+            label-size="lg"
+            label-class="font-weight-bold"
+            label="報名費用"
+            label-for="incomePage_10"
+          >
+            <b-col>
+              <multiselect
+                class="incomePage_10 blue_box"
+                v-model="form2.cost"
+                label="name"
+                track-by="code"
+                :selectLabel="''"
+                :selectGroupLabel="''"
+                :deselectLabel="''"
+                :deselectGroupLabel="''"
+                :options="optionsDate"
+                :multiple="true"
+                :closeOnSelect="false"
               ></multiselect>
 
               <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
@@ -70,8 +101,9 @@
         <div style="display:flex;flex-direction: column">
           <div>
             <b-button type="reset" variant="outline-success" @click="reset">取消</b-button>
-            <b-button type="button" variant="outline-primary">確定</b-button>
+            <b-button type="button" variant="outline-primary" @click="update">確定</b-button>
           </div>
+          <span v-if="checkSelect" style="color:red">請輸入欄位</span>
         </div>
       </div>
     </b-card>
@@ -96,55 +128,107 @@ export default {
   },
   data() {
     return {
-      options: [
-        {
-          language: "Javascript",
-          libs: [
-            { name: "Vue.js", category: "Front-end" },
-            { name: "Adonis", category: "Backend" }
-          ]
-        },
-        {
-          language: "Ruby",
-          libs: [
-            { name: "Rails", category: "Backend" },
-            { name: "Sinatra", category: "Backend" }
-          ]
-        },
-        {
-          language: "Other",
-          libs: [
-            { name: "Laravel", category: "Backend" },
-            { name: "Phoenix", category: "Backend" }
-          ]
-        }
-      ],
+      checkSelect: false,
+      options: [],
       value: [],
       optionsDate: [
-        { name: "全部", code: 0 },
-        { name: "一", code: 1 },
-        { name: "二", code: 2 },
-        { name: "三", code: 3 },
-        { name: "四", code: 4 },
-        { name: "五", code: 5 },
-        { name: "六", code: 6 },
-        { name: "日", code: 7 }
+        { name: "一", code: 0 },
+        { name: "二", code: 1 },
+        { name: "三", code: 2 },
+        { name: "四", code: 3 },
+        { name: "五", code: 4 },
+        { name: "六", code: 5 },
+        { name: "日", code: 6 }
       ],
       valueDate: [],
-      APIbaseURL: "https://theflowchat.com:5001",
+      APIbaseURL: "https://hey300dollars.com/api/poker",
       form2: {
         listName: "",
         list: [],
-        date: []
+        date: [],
+        cost: []
       }
     };
   },
-  created() {},
+  mounted() {
+    //document.getElementById("title").innerHTML = "會員綁定";
+    if (this.$route.query.name)
+      document.getElementById("welcome").innerHTML =
+        "Hi! " + this.$route.query.name;
+    if (this.$route.query.os == "web")
+      document.getElementById("fillcontain").innerHTML =
+        "<p class='content'>請至智慧型手機使用相關功能！</p>";
+  },
+  created() {
+    if (this.$route.params.id == "online") {
+      // axios({
+      //   method: "post",
+      //   baseURL: this.APIbaseURL,
+      //   url: "/brand_list/get"
+      // }).then(res => {
+      //   this.options = res.data.data;
+      // });
+    } else {
+      axios({
+        method: "post",
+        baseURL: this.APIbaseURL,
+        url: "/brand_list/get"
+      }).then(res => {
+        this.options = res.data.data;
+      });
+    }
+  },
   methods: {
     reset() {
       this.clear();
     },
-    clear() {}
+    clear() {},
+    update() {
+      if (this.$route.params.id == "online") {
+        if (
+          this.form2.list.length == 0 ||
+          this.form2.cost.length == 0 ||
+          this.form2.date.length == 0 ||
+          this.form2.listName == ""
+        ) {
+          this.checkSelect = true;
+          return;
+        }
+      } else {
+        if (
+          this.form2.list.length == 0 ||
+          this.form2.date.length == 0 ||
+          this.form2.listName == ""
+        ) {
+          this.checkSelect = true;
+          return;
+        }
+      }
+      this.checkSelect = false;
+      let brand_list = [];
+      let week_list = [];
+      for (let i = 0; i < this.form2.list.length; i++) {
+        brand_list.push(this.form2.list[i].brand_id);
+      }
+      for (let i = 0; i < this.form2.date.length; i++) {
+        week_list.push(this.form2.date[i].code);
+      }
+      let jsonData = {
+        track_name: this.form2.listName,
+        user_id: this.$route.query.uid,
+        brand_list: brand_list,
+        week_list: week_list
+      };
+      axios({
+        method: "post",
+        baseURL: this.APIbaseURL,
+        url: "/track_list/update",
+        data: jsonData,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(res => {});
+    }
   }
 };
 </script>
@@ -176,7 +260,7 @@ export default {
   border-radius: 0.6rem;
 }
 .blue_box {
-  width: 14rem;
+  width: 15rem;
 }
 .blue_box_in {
   width: 15rem;
