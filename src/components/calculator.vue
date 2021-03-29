@@ -110,6 +110,11 @@
             <b-button type="button" variant="outline-primary" @click="update">確定</b-button>
           </div>
           <span v-if="checkSelect" style="color:red">請輸入欄位</span>
+          <b-form-select v-model="selected" :options="optionsa" multiple :select-size="4"></b-form-select>
+          <div class="mt-3">
+            Selected:
+            <strong>{{ selected }}</strong>
+          </div>
         </div>
       </div>
     </b-card>
@@ -134,6 +139,16 @@ export default {
   },
   data() {
     return {
+      selected: ["b"], // Array reference
+      optionsa: [
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+        { value: "d", text: "This one is disabled", disabled: true },
+        { value: "e", text: "This is option e" },
+        { value: "f", text: "This is option f" },
+        { value: "g", text: "This is option g" }
+      ],
       checkSelect: false,
       options: [],
       value: [],
