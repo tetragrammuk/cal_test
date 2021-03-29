@@ -13,7 +13,7 @@
           >
             <b-col>
               <b-form-input
-                class="incomePage_5 blue_box"
+                class="incomePage_5 blue_box_in"
                 placeholder="請輸入清單名稱"
                 v-model="form2.listName"
                 @change="clear()"
@@ -32,6 +32,7 @@
                 v-model="form2.list"
                 :options="options"
                 :multiple="true"
+                :searchable="false"
                 :selectLabel="''"
                 :selectGroupLabel="''"
                 :deselectLabel="''"
@@ -60,6 +61,7 @@
                 v-model="form2.date"
                 label="name"
                 track-by="code"
+                :searchable="false"
                 :selectLabel="''"
                 :selectGroupLabel="''"
                 :deselectLabel="''"
@@ -85,6 +87,7 @@
                 v-model="form2.cost"
                 label="name"
                 track-by="code"
+                :searchable="false"
                 :selectLabel="''"
                 :selectGroupLabel="''"
                 :deselectLabel="''"
@@ -263,7 +266,7 @@ export default {
   width: 15rem;
 }
 .blue_box_in {
-  width: 15rem;
+  width: 15.5rem;
 }
 .form2 {
   display: flex;
