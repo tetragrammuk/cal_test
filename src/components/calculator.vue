@@ -110,7 +110,7 @@
             <b-button type="button" variant="outline-primary" @click="update">確定</b-button>
           </div>
           <span v-if="checkSelect" style="color:red">請輸入欄位</span>
-          <b-form-select v-model="selected" :options="optionsa" multiple :select-size="4"></b-form-select>
+          <b-form-select v-model="selected" :plain="true" :options="optionsa" multiple :select-size="4"></b-form-select>
           <div class="mt-3">
             Selected:
             <strong>{{ selected }}</strong>
