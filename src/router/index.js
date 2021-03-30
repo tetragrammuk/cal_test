@@ -30,7 +30,7 @@ const router = new Router({
       path: '/tool/:id?',
       name: 'calculator',
       meta: {
-        title: "小工具"
+        title: "設定追蹤清單"
       },
       component: calculator
     }

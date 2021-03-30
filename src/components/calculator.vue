@@ -1,13 +1,7 @@
 <template>
   <div class="fillcontain" id="fillcontain">
     <b-card no-body>
-      <h1 style="margin-top:1rem" id="welcome"></h1>
-      <h1 style="margin-bottom:1rem;">請設定清單條件</h1>
-
       <div class="incomePage">
-        <b-button class="updateBtn" type="button" variant="outline-primary" @click="update">確定</b-button>
-        <span v-if="checkSelect" style="color:red">請輸入欄位</span>
-
         <b-form class="form2" ref="form2" :model="form2">
           <b-form-group
             label="清單名稱"
@@ -97,6 +91,8 @@
               </el-select>
             </b-col>
           </b-form-group>
+          <span v-if="checkSelect" class="updateBtn" style="color:red">請輸入欄位</span>
+          <b-button class="updateBtn" type="button" variant="primary" @click="update">確定</b-button>
         </b-form>
       </div>
     </b-card>
@@ -167,7 +163,7 @@ export default {
         baseURL: this.APIbaseURL,
         url: "/brand_list/get"
       }).then(res => {
-        console.debug(res);
+        // console.debug(res);
         this.options = res.data.data;
       });
     }
@@ -205,7 +201,7 @@ export default {
         brand_list: this.form2.list,
         week_list: this.form2.date
       };
-      console.debug(jsonData);
+    //   console.debug(jsonData);
       axios({
         method: "post",
         baseURL: this.APIbaseURL,
@@ -226,7 +222,8 @@ export default {
 }
 .updateBtn {
   margin-bottom: 1rem;
-  width: 70%;
+  width: 100%;
+  font-weight: bold;
 }
 .selector-for-some-widget {
   box-sizing: content-box;
