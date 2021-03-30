@@ -2,8 +2,12 @@
   <div class="fillcontain" id="fillcontain">
     <b-card no-body>
       <h1 style="margin-top:1rem" id="welcome"></h1>
-      <h1 style="margin-bottom:2.5rem;">請設定清單條件</h1>
+      <h1 style="margin-bottom:1rem;">請設定清單條件</h1>
+
       <div class="incomePage">
+        <b-button class="updateBtn" type="button" variant="outline-primary" @click="update">確定</b-button>
+        <span v-if="checkSelect" style="color:red">請輸入欄位</span>
+
         <b-form class="form2" ref="form2" :model="form2">
           <b-form-group
             label="清單名稱"
@@ -13,7 +17,7 @@
           >
             <b-col>
               <b-form-input
-                class="incomePage_5 blue_box_in"
+                class="incomePage_5 blue_box"
                 placeholder="請輸入清單名稱"
                 v-model="form2.listName"
                 @change="clear()"
@@ -27,53 +31,47 @@
             label-for="incomePage_10"
           >
             <b-col>
-              <multiselect
+              <el-select
                 class="incomePage_10 blue_box"
                 v-model="form2.list"
-                :hideSelected="true"
-                :options="options"
-                :multiple="true"
-                :searchable="false"
-                :selectLabel="''"
-                :selectGroupLabel="''"
-                :deselectLabel="''"
-                :deselectGroupLabel="''"
-                group-values="libs"
-                group-label="location"
-                :group-select="true"
-                :closeOnSelect="false"
-                track-by="brand_key"
-                label="brand_key"
+                multiple
+                placeholder="請選擇協會"
               >
-                <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
-              </multiselect>
-              <!-- <pre class="language-json"><code>{{ form2.list  }}</code></pre> -->
+                <el-option-group
+                  v-for="group in options"
+                  :key="group.location"
+                  :label="group.location"
+                >
+                  <el-option
+                    v-for="item in group.libs"
+                    :key="item.brand_id"
+                    :label="item.brand_key"
+                    :value="item.brand_id"
+                  ></el-option>
+                </el-option-group>
+              </el-select>
             </b-col>
           </b-form-group>
           <b-form-group
             label-size="lg"
             label-class="font-weight-bold"
             label="每個禮拜"
-            label-for="incomePage_10"
+            label-for="incomePage_11"
           >
             <b-col>
-              <multiselect
-                class="incomePage_10 blue_box"
+              <el-select
+                class="incomePage_11 blue_box"
                 v-model="form2.date"
-                label="name"
-                track-by="code"
-                :hideSelected="true"
-                :searchable="false"
-                :selectLabel="''"
-                :selectGroupLabel="''"
-                :deselectLabel="''"
-                :deselectGroupLabel="''"
-                :options="optionsDate"
-                :multiple="false"
-                :closeOnSelect="false"
-              ></multiselect>
-
-              <!-- <pre class="language-json"><code>{{ form2.date  }}</code></pre> -->
+                multiple
+                placeholder="請選擇星期"
+              >
+                <el-option
+                  v-for="item in optionsDate"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
             </b-col>
           </b-form-group>
           <b-form-group
@@ -81,41 +79,25 @@
             label-size="lg"
             label-class="font-weight-bold"
             label="報名費用"
-            label-for="incomePage_10"
+            label-for="incomePage_12"
           >
             <b-col>
-              <multiselect
-                class="incomePage_10 blue_box"
-                v-model="form2.cost"
-                label="name"
-                track-by="code"
-                :hideSelected="true"
-                :searchable="false"
-                :selectLabel="''"
-                :selectGroupLabel="''"
-                :deselectLabel="''"
-                :deselectGroupLabel="''"
-                :options="optionsDate"
-                :multiple="true"
-                :closeOnSelect="false"
-              ></multiselect>
-
-              <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
+              <el-select
+                class="incomePage_12 blue_box"
+                v-model="form2.date"
+                multiple
+                placeholder="請選擇星期"
+              >
+                <el-option
+                  v-for="item in optionsDate"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
             </b-col>
           </b-form-group>
         </b-form>
-        <div style="display:flex;flex-direction: column">
-          <div>
-            <b-button type="reset" variant="outline-success" @click="reset">取消</b-button>
-            <b-button type="button" variant="outline-primary" @click="update">確定</b-button>
-          </div>
-          <span v-if="checkSelect" style="color:red">請輸入欄位</span>
-          <b-form-select v-model="selected" :plain="true" :options="optionsa" multiple :select-size="4"></b-form-select>
-          <div class="mt-3">
-            Selected:
-            <strong>{{ selected }}</strong>
-          </div>
-        </div>
       </div>
     </b-card>
   </div>
@@ -139,16 +121,6 @@ export default {
   },
   data() {
     return {
-      selected: ["b"], // Array reference
-      optionsa: [
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Default Selected Option" },
-        { value: "c", text: "This is another option" },
-        { value: "d", text: "This one is disabled", disabled: true },
-        { value: "e", text: "This is option e" },
-        { value: "f", text: "This is option f" },
-        { value: "g", text: "This is option g" }
-      ],
       checkSelect: false,
       options: [],
       value: [],
@@ -195,6 +167,7 @@ export default {
         baseURL: this.APIbaseURL,
         url: "/brand_list/get"
       }).then(res => {
+        console.debug(res);
         this.options = res.data.data;
       });
     }
@@ -226,20 +199,13 @@ export default {
         }
       }
       this.checkSelect = false;
-      let brand_list = [];
-      let week_list = [];
-      for (let i = 0; i < this.form2.list.length; i++) {
-        brand_list.push(this.form2.list[i].brand_id);
-      }
-      for (let i = 0; i < this.form2.date.length; i++) {
-        week_list.push(this.form2.date[i].code);
-      }
       let jsonData = {
         track_name: this.form2.listName,
         user_id: this.$route.query.uid,
-        brand_list: brand_list,
-        week_list: week_list
+        brand_list: this.form2.list,
+        week_list: this.form2.date
       };
+      console.debug(jsonData);
       axios({
         method: "post",
         baseURL: this.APIbaseURL,
@@ -258,7 +224,10 @@ export default {
 .fillcontain {
   padding-top: 20px;
 }
-
+.updateBtn {
+  margin-bottom: 1rem;
+  width: 70%;
+}
 .selector-for-some-widget {
   box-sizing: content-box;
 }
@@ -276,7 +245,7 @@ export default {
   border: 4px solid #2196f3;
   border-radius: 0.6rem;
 }
-.multiselect {
+.el-select {
   border: 4px solid #2196f3;
   border-radius: 0.6rem;
 }
