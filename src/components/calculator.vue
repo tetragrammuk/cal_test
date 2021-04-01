@@ -201,7 +201,7 @@ export default {
         brand_list: this.form2.list,
         week_list: this.form2.date
       };
-    //   console.debug(jsonData);
+      //   console.debug(jsonData);
       axios({
         method: "post",
         baseURL: this.APIbaseURL,
@@ -224,6 +224,7 @@ export default {
   margin-bottom: 1rem;
   width: 100%;
   font-weight: bold;
+  border-radius: 0.6rem;
 }
 .selector-for-some-widget {
   box-sizing: content-box;
