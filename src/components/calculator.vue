@@ -1,114 +1,94 @@
 <template>
   <div class="fillcontain" id="fillcontain">
-    <b-card no-body>
-      <div class="incomePage">
-        <b-form class="form2" ref="form2" :model="form2">
-          <b-form-group
-            label="清單名稱"
-            label-size="lg"
-            label-class="font-weight-bold"
-            label-for="incomePage_5"
+    <div class="incomePage">
+      <b-form class="form2" ref="form2" :model="form2">
+        <b-form-group
+          label="清單名稱"
+          label-size="lg"
+          label-class="font-weight-bold"
+          label-for="incomePage_5"
+        >
+          <b-form-input
+            class="incomePage_5 blue_box"
+            placeholder="請輸入清單名稱"
+            v-model="form2.listName"
+            @change="clear()"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          label-size="lg"
+          label-class="font-weight-bold"
+          :label="this.$route.params.id == 'online'? '選擇APP':'選擇協會'"
+          label-for="incomePage_10"
+        >
+          <el-select
+            class="incomePage_10 blue_box"
+            v-model="form2.list"
+            multiple
+            placeholder="請選擇協會"
           >
-            <b-col>
-              <b-form-input
-                class="incomePage_5 blue_box"
-                placeholder="請輸入清單名稱"
-                v-model="form2.listName"
-                @change="clear()"
-              ></b-form-input>
-            </b-col>
-          </b-form-group>
-          <b-form-group
-            label-size="lg"
-            label-class="font-weight-bold"
-            :label="this.$route.params.id == 'online'? '選擇APP':'選擇協會'"
-            label-for="incomePage_10"
+            <el-option-group v-for="group in options" :key="group.location" :label="group.location">
+              <el-option
+                v-for="item in group.libs"
+                :key="item.brand_id"
+                :label="item.brand_key"
+                :value="item.brand_id"
+              ></el-option>
+            </el-option-group>
+          </el-select>
+        </b-form-group>
+        <b-form-group
+          label-size="lg"
+          label-class="font-weight-bold"
+          label="每個禮拜"
+          label-for="incomePage_11"
+        >
+          <el-select
+            class="incomePage_11 blue_box"
+            v-model="form2.date"
+            multiple
+            placeholder="請選擇星期"
           >
-            <b-col>
-              <el-select
-                class="incomePage_10 blue_box"
-                v-model="form2.list"
-                multiple
-                placeholder="請選擇協會"
-              >
-                <el-option-group
-                  v-for="group in options"
-                  :key="group.location"
-                  :label="group.location"
-                >
-                  <el-option
-                    v-for="item in group.libs"
-                    :key="item.brand_id"
-                    :label="item.brand_key"
-                    :value="item.brand_id"
-                  ></el-option>
-                </el-option-group>
-              </el-select>
-            </b-col>
-          </b-form-group>
-          <b-form-group
-            label-size="lg"
-            label-class="font-weight-bold"
-            label="每個禮拜"
-            label-for="incomePage_11"
+            <el-option
+              v-for="item in optionsDate"
+              :key="item.code"
+              :label="item.name"
+              :value="item.code"
+            ></el-option>
+          </el-select>
+        </b-form-group>
+        <b-form-group
+          v-if="this.$route.params.id == 'online'"
+          label-size="lg"
+          label-class="font-weight-bold"
+          label="報名費用"
+          label-for="incomePage_12"
+        >
+          <el-select
+            class="incomePage_12 blue_box"
+            v-model="form2.date"
+            multiple
+            placeholder="請選擇星期"
           >
-            <b-col>
-              <el-select
-                class="incomePage_11 blue_box"
-                v-model="form2.date"
-                multiple
-                placeholder="請選擇星期"
-              >
-                <el-option
-                  v-for="item in optionsDate"
-                  :key="item.code"
-                  :label="item.name"
-                  :value="item.code"
-                ></el-option>
-              </el-select>
-            </b-col>
-          </b-form-group>
-          <b-form-group
-            v-if="this.$route.params.id == 'online'"
-            label-size="lg"
-            label-class="font-weight-bold"
-            label="報名費用"
-            label-for="incomePage_12"
-          >
-            <b-col>
-              <el-select
-                class="incomePage_12 blue_box"
-                v-model="form2.date"
-                multiple
-                placeholder="請選擇星期"
-              >
-                <el-option
-                  v-for="item in optionsDate"
-                  :key="item.code"
-                  :label="item.name"
-                  :value="item.code"
-                ></el-option>
-              </el-select>
-            </b-col>
-          </b-form-group>
-          <span v-if="checkSelect" class="updateBtn" style="color:red">請輸入欄位</span>
-          <b-button class="updateBtn" type="button" variant="primary" @click="update">確定</b-button>
-        </b-form>
-      </div>
-    </b-card>
+            <el-option
+              v-for="item in optionsDate"
+              :key="item.code"
+              :label="item.name"
+              :value="item.code"
+            ></el-option>
+          </el-select>
+        </b-form-group>
+        <span v-if="checkSelect" class="updateBtn" style="color:red">請輸入欄位</span>
+        <b-button class="updateBtn" type="button" variant="primary" @click="update">確定</b-button>
+      </b-form>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import ticket from "./ticket";
-import Multiselect from "vue-multiselect";
 export default {
   name: "calculator",
-  components: {
-    ticket,
-    Multiselect
-  },
   props: {},
   computed: {
     nameState() {
@@ -140,13 +120,12 @@ export default {
     };
   },
   mounted() {
-    //document.getElementById("title").innerHTML = "會員綁定";
-    if (this.$route.query.name)
-      document.getElementById("welcome").innerHTML =
-        "Hi! " + this.$route.query.name;
-    if (this.$route.query.os == "web")
-      document.getElementById("fillcontain").innerHTML =
-        "<p class='content'>請至智慧型手機使用相關功能！</p>";
+    // if (this.$route.query.name)
+    //   document.getElementById("welcome").innerHTML =
+    //     "Hi! " + this.$route.query.name;
+    // if (this.$route.query.os == "web")
+    //   document.getElementById("fillcontain").innerHTML =
+    //     "<p class='content'>請至智慧型手機使用相關功能！</p>";
   },
   created() {
     if (this.$route.params.id == "online") {
@@ -225,6 +204,10 @@ export default {
   width: 100%;
   font-weight: bold;
   border-radius: 0.6rem;
+  margin-top: 1rem;
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
 }
 .selector-for-some-widget {
   box-sizing: content-box;
@@ -236,16 +219,33 @@ export default {
 }
 
 .form-control {
-  border: 4px solid #2196f3;
-  border-radius: 0.6rem;
+  //   border: 4px solid #2196f3;
+  //   border-radius: 0.6rem;
 }
 .custom-select {
-  border: 4px solid #2196f3;
-  border-radius: 0.6rem;
+  //   border: 4px solid #2196f3;
+  //   border-radius: 0.6rem;
 }
-.el-select {
-  border: 4px solid #2196f3;
-  border-radius: 0.6rem;
+.el-select /deep/ .el-input__inner {
+  border: 1px solid #ced4da;
+  min-height: 38px;
+  //   border-radius: 0.6rem;
+}
+.el-tag/deep/.el-tag--info /deep/.el-tag__close {
+  color: #6c757d;
+}
+.el-select /deep/.el-select__tags {
+  .el-tag {
+    background-color: #67c23a;
+    border-color: #67c23a;
+    color: #ffffff;
+    .el-icon-close {
+      background-color: #67c23a;
+      right: -7px;
+      top: 0;
+      color: #6c757d;
+    }
+  }
 }
 .blue_box {
   width: 15rem;
@@ -260,9 +260,12 @@ export default {
 }
 .form-group {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: baseline;
-  flex-flow: wrap;
+  margin-bottom: 0.3rem;
+}
+/deep/ .col-form-label-lg {
+  margin-bottom: 0px;
 }
 .form-group-in-box {
   display: flex;
