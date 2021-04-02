@@ -221,7 +221,7 @@ export default {
           liff.sendMessages([
             {
               type: "text",
-              text: "追蹤清單"
+              text: "設定完成"
             }
           ]);
 		}
