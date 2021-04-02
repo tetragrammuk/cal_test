@@ -12,7 +12,6 @@
             class="incomePage_5 blue_box"
             placeholder="請輸入清單名稱"
             v-model="form2.listName"
-            @change="clear()"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -166,16 +165,12 @@ export default {
         baseURL: this.APIbaseURL,
         url: "/brand_list/get"
       }).then(res => {
-        console.debug(res);
+        // console.debug(res);
         this.options = res.data.data;
       });
     }
   },
   methods: {
-    reset() {
-      this.clear();
-    },
-    clear() {},
     update() {
       if (this.$route.params.id == "online") {
         if (
@@ -214,7 +209,7 @@ export default {
           "Content-Type": "application/json"
         }
       }).then(res => {
-        console.debug(res);
+        // console.debug(res);
         if (res.data == "error") {
           liff.sendMessages([
             {
