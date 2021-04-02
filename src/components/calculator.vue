@@ -78,7 +78,7 @@
           </el-select>
         </b-form-group>
         <span v-if="checkSelect" class="updateBtn" style="color:red">請輸入欄位</span>
-        <b-button class="updateBtn2" type="button" variant="primary" @click="update">確定</b-button>
+        <b-button class="updateBtn2" type="button" @click="update">確定</b-button>
       </b-form>
     </div>
   </div>
