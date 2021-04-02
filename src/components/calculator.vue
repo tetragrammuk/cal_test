@@ -80,6 +80,7 @@
         </b-form-group>
         <span v-if="checkSelect" class="updateBtn" style="color:red">請輸入欄位</span>
         <b-button class="updateBtn" type="button" variant="primary" @click="update">確定</b-button>
+		{{userId}}
       </b-form>
     </div>
   </div>
@@ -87,6 +88,7 @@
 
 <script>
 import axios from "axios";
+import liff from "@line/liff";
 export default {
   name: "calculator",
   props: {},
@@ -116,10 +118,40 @@ export default {
         list: [],
         date: [],
         cost: []
-      }
+      },
+	  LiffId: "1655804827-Qjn65NyB",
+	  userId:"123"
     };
   },
   mounted() {
+    liff
+      .init({
+        liffId: this.LiffId
+      })
+      .then(() => {
+        var os = liff.getOS();
+        // console.log("OS : " + os);
+        if (os == "web") {
+          document.getElementById("fillcontain").innerHTML =
+            "<p class='content'>請至智慧型手機使用相關功能！</p>";
+          return;
+        } else {
+          liff
+            .getProfile()
+            .then(profile => {
+              this.userId = profile.userId;
+            //   console.log("userId ", this.userId);
+            //   console.log("userName ", this.userName);
+            })
+            .catch(error => {
+              console.log("getProfile", error);
+            });
+        }
+      })
+      .catch(error => {
+        console.log("LiffInit", error);
+      });
+
     // if (this.$route.query.name)
     //   document.getElementById("welcome").innerHTML =
     //     "Hi! " + this.$route.query.name;
@@ -176,7 +208,7 @@ export default {
       this.checkSelect = false;
       let jsonData = {
         track_name: this.form2.listName,
-        user_id: this.$route.query.uid,
+        user_id: this.userId,
         brand_list: this.form2.list,
         week_list: this.form2.date
       };
