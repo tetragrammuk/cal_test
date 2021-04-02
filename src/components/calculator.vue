@@ -79,8 +79,7 @@
           </el-select>
         </b-form-group>
         <span v-if="checkSelect" class="updateBtn" style="color:red">請輸入欄位</span>
-        <b-button class="updateBtn" type="button" variant="primary" @click="update">確定</b-button>
-		{{userId}}
+        <b-button class="updateBtn2" type="button" variant="primary" @click="update">確定</b-button>
       </b-form>
     </div>
   </div>
@@ -119,8 +118,8 @@ export default {
         date: [],
         cost: []
       },
-	  LiffId: "1655804827-Qjn65NyB",
-	  userId:"123"
+      LiffId: "1655804827-Qjn65NyB",
+      userId: ""
     };
   },
   mounted() {
@@ -151,13 +150,6 @@ export default {
       .catch(error => {
         console.log("LiffInit", error);
       });
-
-    // if (this.$route.query.name)
-    //   document.getElementById("welcome").innerHTML =
-    //     "Hi! " + this.$route.query.name;
-    // if (this.$route.query.os == "web")
-    //   document.getElementById("fillcontain").innerHTML =
-    //     "<p class='content'>請至智慧型手機使用相關功能！</p>";
   },
   created() {
     if (this.$route.params.id == "online") {
@@ -174,7 +166,7 @@ export default {
         baseURL: this.APIbaseURL,
         url: "/brand_list/get"
       }).then(res => {
-        // console.debug(res);
+        console.debug(res);
         this.options = res.data.data;
       });
     }
@@ -221,7 +213,25 @@ export default {
         headers: {
           "Content-Type": "application/json"
         }
-      }).then(res => {});
+      }).then(res => {
+        console.debug(res);
+        if (res.data == "error") {
+          liff.sendMessages([
+            {
+              type: "text",
+              text: "設定錯誤，且洽客服"
+            }
+          ]);
+        } else {
+          liff.sendMessages([
+            {
+              type: "text",
+              text: "追蹤清單"
+            }
+          ]);
+		}
+		liff.closeWindow();
+      });
     }
   }
 };
@@ -232,6 +242,13 @@ export default {
   padding-top: 20px;
 }
 .updateBtn {
+  margin-bottom: 1rem;
+  width: 100%;
+  font-weight: bold;
+  border-radius: 0.6rem;
+  margin-top: 1rem;
+}
+.updateBtn2 {
   margin-bottom: 1rem;
   width: 100%;
   font-weight: bold;
