@@ -584,7 +584,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #dadae4;
+  background-color: #FFFFFF;
   width: 7%;
   min-width: 1rem;
   height: 2rem;
@@ -600,7 +600,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #dadae4;
+  background-color: #FFFFFF;
   width: 100%;
   height: 100%;
   padding: 1.5rem 0.7rem;
@@ -651,5 +651,20 @@ export default {
 .dropdown-item .b-icon.bi,
 .input-group-text .b-icon.bi {
   font-size: 160%;
+}
+.sortable-drag{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF;
+  width: 7%;
+  height: 2rem;
+  padding: 2rem 1.4rem;
+  margin: 0.05rem 0.1rem;
+  border-radius: 0.2rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 </style>
