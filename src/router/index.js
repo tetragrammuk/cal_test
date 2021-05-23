@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import calculator from '@/components/calculator'
 import bind from '@/components/bind'
+import WinningPercentage from '@/components/WinningPercentage'
+
 
 Vue.use(Router)
 const router = new Router({
@@ -18,6 +20,11 @@ const router = new Router({
       name: 'HelloWorld',
       component: HelloWorld
     },
+	{
+		path: '/WinningPercentage',
+		name: 'WinningPercentage',
+		component: WinningPercentage
+	},
     {
       path: '/bind/:id',
       name: 'bind',
