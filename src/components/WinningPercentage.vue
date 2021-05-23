@@ -1,5 +1,5 @@
 <template>
-  <div class="container out_wrapper">
+  <div class="out_wrapper">
     <div class="WinningPercentage">
       <div class="board">
         <draggable
