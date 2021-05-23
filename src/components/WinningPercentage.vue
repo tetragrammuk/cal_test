@@ -1,101 +1,24 @@
 <template>
-  <div class="WinningPercentage">
-    <div class="board">
-      <draggable
-        class="dragArea list-group card-slot ml-1 mr-1"
-        v-for="(item, index) in board"
-        :key="index"
-        :list="item"
-        :group="{ name: 'people' }"
-        @change="board_change($event, index)"
-      >
-        <div
-          class="list-group-item card-unit-slot"
-          v-for="unit in item"
-          :key="unit.name"
-          :style="
-            'color:' +
-            (unit.name[1] === 's' || unit.name[1] === 'c' ? 'black' : 'red')
-          "
+  <div class="container out_wrapper">
+    <div class="WinningPercentage">
+      <div class="board">
+        <draggable
+          class="dragArea list-group card-slot ml-1 mr-1"
+          v-for="(item, index) in board"
+          :key="index"
+          :list="item"
+          :group="{ name: 'people' }"
+          @change="board_change($event, index)"
         >
-          <div class="number">{{ unit.name[0] }}</div>
-          <div class="color">
-            {{
-              unit.name[1]
-                .replace("s", "♠️")
-                .replace("c", "♣️")
-                .replace("h", "♥️")
-                .replace("d", "♦️")
-            }}
-          </div>
-        </div>
-      </draggable>
-    </div>
-    <div class="player-region">
-      <div
-        class="player"
-        v-for="(player, player_index) in players"
-        :key="player_index"
-      >
-        <div class="player-card">
-          <draggable
-            class="dragArea list-group card-slot"
-            v-for="(item, index) in player"
-            :key="index"
-            :list="item"
-            :group="{ name: 'people' }"
-            @change="player_change($event, player_index, index)"
+          <div
+            class="list-group-item card-unit-slot"
+            v-for="unit in item"
+            :key="unit.name"
+            :style="
+              'color:' +
+              (unit.name[1] === 's' || unit.name[1] === 'c' ? 'black' : 'red')
+            "
           >
-            <div
-              class="list-group-item card-unit-slot"
-              v-for="unit in item"
-              :key="unit.name"
-              :style="
-                'color:' +
-                (unit.name[1] === 's' || unit.name[1] === 'c' ? 'black' : 'red')
-              "
-            >
-              <div class="number">{{ unit.name[0] }}</div>
-              <div class="color">
-                {{
-                  unit.name[1]
-                    .replace("s", "♠️")
-                    .replace("c", "♣️")
-                    .replace("h", "♥️")
-                    .replace("d", "♦️")
-                }}
-              </div>
-            </div>
-          </draggable>
-        </div>
-        <div class="result">
-          <div class="win text">
-            <span>win</span><span class="percentage">55.5</span>
-          </div>
-          <div class="tie text">
-            <span>tie</span><span class="percentage">54.5</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-region">
-      <draggable
-        class="dragArea list-group card-row"
-        v-for="(color, indexCard) in cards"
-        :key="indexCard"
-        :list="color"
-        :group="{ name: 'people', pull: 'clone', put: false }"
-        @change="log"
-        :clone="clone"
-        :sort="false"
-      >
-        <div
-          class="list-group-item card-unit"
-          :style="'color:' + colors[indexCard]"
-          v-for="unit in color"
-          :key="unit.id"
-        >
-          <template v-if="unit.name.length !== 0">
             <div class="number">{{ unit.name[0] }}</div>
             <div class="color">
               {{
@@ -106,9 +29,104 @@
                   .replace("d", "♦️")
               }}
             </div>
-          </template>
+          </div>
+        </draggable>
+      </div>
+      <b-alert
+        class="error-msg"
+        :show="dismissCountDown"
+        dismissible
+        variant="warning"
+        @dismissed="dismissCountDown = 0"
+        @dismiss-count-down="countDownChanged"
+        >輸入有誤</b-alert
+      >
+
+      <div class="player-region">
+        <div
+          class="player"
+          v-for="(player, player_index) in players"
+          :key="player_index"
+        >
+          <div class="player-card">
+            <draggable
+              class="dragArea list-group card-slot"
+              v-for="(item, index) in player"
+              :key="index"
+              :list="item"
+              :group="{ name: 'people' }"
+              @change="player_change($event, player_index, index)"
+            >
+              <div
+                class="list-group-item card-unit-slot"
+                v-for="unit in item"
+                :key="unit.name"
+                :style="
+                  'color:' +
+                  (unit.name[1] === 's' || unit.name[1] === 'c'
+                    ? 'black'
+                    : 'red')
+                "
+              >
+                <div class="number">{{ unit.name[0] }}</div>
+                <div class="color">
+                  {{
+                    unit.name[1]
+                      .replace("s", "♠️")
+                      .replace("c", "♣️")
+                      .replace("h", "♥️")
+                      .replace("d", "♦️")
+                  }}
+                </div>
+              </div>
+            </draggable>
+          </div>
+          <div class="result" v-if="!spinner">
+            <div class="win text">
+              <span>win</span
+              ><span class="percentage">{{ players_ans[player_index] }}</span>
+            </div>
+            <div class="tie text">
+              <span>tie</span><span class="percentage">{{ tie }}</span>
+            </div>
+          </div>
+          <div class="spinner" v-else>
+            <b-spinner label="Loading..."></b-spinner>
+          </div>
         </div>
-      </draggable>
+      </div>
+      <div class="card-region">
+        <draggable
+          class="dragArea list-group card-row"
+          v-for="(color, indexCard) in cards"
+          :key="indexCard"
+          :list="color"
+          :group="{ name: 'people', pull: 'clone', put: false }"
+          @change="log"
+          :clone="clone"
+          :sort="false"
+        >
+          <div
+            class="list-group-item card-unit"
+            :style="'color:' + colors[indexCard]"
+            v-for="unit in color"
+            :key="unit.id"
+          >
+            <template v-if="unit.name.length !== 0">
+              <div class="number">{{ unit.name[0] }}</div>
+              <div class="color">
+                {{
+                  unit.name[1]
+                    .replace("s", "♠️")
+                    .replace("c", "♣️")
+                    .replace("h", "♥️")
+                    .replace("d", "♦️")
+                }}
+              </div>
+            </template>
+          </div>
+        </draggable>
+      </div>
     </div>
 
     <b-navbar type="light" variant="light" fixed="bottom">
@@ -116,25 +134,25 @@
         <b-navbar-nav align="center" :justified="justified">
           <b-nav-item @click="menu_click('reset')" active-class="active">
             <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon>
-            <div class="font">重置</div>
+            <!-- <div class="font">重置</div> -->
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav align="center" :justified="justified">
           <b-nav-item @click="menu_click('-')" active-class="active">
             <b-icon icon="person-dash" aria-hidden="true"></b-icon>
-            <div class="font">玩家</div>
+            <!-- <div class="font">玩家</div> -->
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav align="center" :justified="justified">
           <b-nav-item @click="menu_click('+')" active-class="active">
             <b-icon icon="person-plus" aria-hidden="true"></b-icon>
-            <div class="font">玩家</div>
+            <!-- <div class="font">玩家</div> -->
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav align="center" :justified="justified">
           <b-nav-item @click="menu_click('cal')" active-class="active">
-            <b-icon icon="calculator" aria-hidden="true"></b-icon>
-            <div class="font">計算</div>
+            <!-- <b-icon icon="calculator" aria-hidden="true"></b-icon> -->
+            <div class="font-cal">計算</div>
           </b-nav-item>
         </b-navbar-nav>
       </div>
@@ -143,6 +161,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import draggable from "vuedraggable";
 let idGlobal = 100;
 export default {
@@ -152,7 +171,11 @@ export default {
   },
   data() {
     return {
+      dismissSecs: 3,
+      dismissCountDown: 0,
+
       justified: true,
+      spinner: false,
       cards: [
         [
           { name: "2c", id: 2 },
@@ -282,6 +305,8 @@ export default {
       board_bak: [{}, {}, {}, {}, {}],
       players: [[[], []]],
       players_bak: [[{}, {}]],
+      players_ans: [0.0, 0.0, 0.0, 0.0, 0.0],
+      tie: 0.0,
     };
   },
   methods: {
@@ -306,6 +331,13 @@ export default {
       );
       this.players_bak[player_index][index] = evt.added.element;
     },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
+    },
+
     checkCard(name, bak) {
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 13; j++) {
@@ -327,19 +359,121 @@ export default {
         return;
       }
       if (button === "-") {
+        if (this.players.length === 1) return;
         this.players.splice(this.players.length - 1, 1);
         this.players_bak.splice(this.players_bak.length - 1, 1);
         return;
       }
       if (button === "reset") {
+        this.spinner = false;
         this.cards = JSON.parse(JSON.stringify(this.cards_bak));
         this.board = [[], [], [], [], []];
         this.board_bak = [{}, {}, {}, {}, {}];
         this.players = [[[], []]];
         this.players_bak = [[{}, {}]];
+        this.players_ans = [0.0, 0.0, 0.0, 0.0, 0.0];
+        this.tie = 0.0;
+
         return;
       }
       if (button === "cal") {
+        this.spinner = true;
+        let cal_str = "";
+        let hasBoard = false;
+        for (let play = 0; play < this.players.length; play++) {
+          let card0 = "";
+          let card1 = "";
+          if (this.players[play][0].length === 0) {
+            card0 = "?";
+          } else {
+            card0 = this.players[play][0][0].name;
+          }
+          if (this.players[play][1].length === 0) {
+            card1 = "?";
+          } else {
+            card1 = this.players[play][1][0].name;
+          }
+          cal_str = cal_str + card0 + " " + card1 + " ";
+        }
+        if (
+          this.board[0].length === 0 &&
+          this.board[1].length === 0 &&
+          this.board[2].length === 0 &&
+          this.board[3].length === 0 &&
+          this.board[4].length === 0
+        ) {
+        } else {
+          if (
+            this.board[0].length === 1 &&
+            this.board[1].length === 1 &&
+            this.board[2].length === 1
+          ) {
+            hasBoard = true;
+            cal_str =
+              cal_str +
+              "-b " +
+              this.board[0][0].name +
+              " " +
+              this.board[1][0].name +
+              " " +
+              this.board[2][0].name;
+
+            if (this.board[3].length === 1) {
+              cal_str = cal_str + " " + this.board[3][0].name;
+              if (this.board[4].length === 1) {
+                cal_str = cal_str + " " + this.board[4][0].name;
+              }
+            }
+          }
+        }
+        console.debug(cal_str);
+        axios({
+          method: "post",
+          baseURL: "https://hey300dollars.com",
+          url: "/api/poker/calculate/win_rate",
+          data: {
+            text: cal_str,
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
+          console.debug(res);
+          if (res.data.type === "text") {
+            console.debug("error");
+            this.showAlert();
+            this.spinner = false;
+            return;
+          }
+          let result;
+          if (hasBoard) {
+            result = res.data.contents.contents[0].body.contents[4].contents;
+          } else {
+            result = res.data.contents.contents[0].body.contents[2].contents;
+          }
+          for (let i = 0; i < result.length - 2; i++) {
+            this.players_ans.splice(
+              i,
+              1,
+              parseFloat(
+                result[i].contents[1].text.slice(
+                  0,
+                  result[i].contents[1].text.length - 1
+                )
+              ).toFixed(1)
+            );
+          }
+          this.tie = result[result.length - 1].contents[1].text.slice(
+            0,
+            parseFloat(
+              result[result.length - 1].contents[1].text.length - 1
+            ).toFixed(1)
+          );
+
+          this.spinner = false;
+        });
+
+        return;
       }
     },
   },
@@ -348,6 +482,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.out_wrapper {
+  font-family: "Microsoft JhengHei";
+  font-weight: bold;
+}
+.out_wrapper::-webkit-scrollbar {
+  display: none;
+}
+.out_wrapper {
+  -ms-overflow-style: none;
+  background-color: cadetblue;
+  min-height: 50rem;
+}
 .WinningPercentage {
   background-color: cadetblue;
 }
@@ -389,6 +535,18 @@ export default {
   justify-content: center;
   background-color: rgb(65, 65, 65);
   width: 90px;
+}
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(65, 65, 65);
+  color: darkgray;
+  width: 90px;
+}
+.error-msg {
+  position: absolute;
+  left: 33%;
 }
 .text {
   display: flex;
@@ -459,7 +617,7 @@ export default {
   overflow: hidden;
 }
 .fixed-bottom {
-  height: 6rem;
+  height: 3rem;
   padding: 0 2rem;
   box-shadow: 0px -8px 9px -10px #bdbdbd;
   -webkit-box-shadow: 0px -8px 9px -10px #bdbdbd;
@@ -477,6 +635,9 @@ export default {
 }
 .font {
   margin-top: 0.5rem;
+}
+.font-cal {
+  font-weight: bold;
 }
 .btn .b-icon.bi,
 .nav-link .b-icon.bi,
