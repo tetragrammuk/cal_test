@@ -354,6 +354,7 @@ export default {
     },
     menu_click(button) {
       if (button === "+") {
+        if (this.players.length === 8) return;
         this.players.push([[], []]);
         this.players_bak.push([{}, {}]);
         return;
@@ -426,7 +427,7 @@ export default {
             }
           }
         }
-        console.debug(cal_str);
+        // console.debug(cal_str);
         axios({
           method: "post",
           baseURL: "https://hey300dollars.com",
@@ -438,7 +439,7 @@ export default {
             "Content-Type": "application/json",
           },
         }).then((res) => {
-          console.debug(res);
+          //   console.debug(res);
           if (res.data.type === "text") {
             console.debug("error");
             this.showAlert();
