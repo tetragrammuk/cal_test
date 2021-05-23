@@ -337,6 +337,9 @@ export default {
         this.board_bak = [{}, {}, {}, {}, {}];
         this.players = [[[], []]];
         this.players_bak = [[{}, {}]];
+        return;
+      }
+      if (button === "cal") {
       }
     },
   },
@@ -422,12 +425,12 @@ export default {
   width: 7%;
   min-width: 1rem;
   height: 2rem;
-  padding: 1.2rem 0.7rem;
+  padding: 1.4rem 0.7rem;
   margin: 0.05rem 0.1rem;
   border-radius: 0.2rem;
   font-weight: bold;
-  font-size: 1.2rem;
-  line-height: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.1rem;
 }
 .card-unit-slot {
   display: flex;
@@ -440,7 +443,7 @@ export default {
   padding: 1.5rem 0.7rem;
   border-radius: 0.2rem;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1.2rem;
 }
 .card-slot {
