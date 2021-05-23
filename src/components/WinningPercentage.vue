@@ -568,6 +568,10 @@ export default {
   flex-direction: column;
   padding: 0.1rem;
   background-color: #403f3f;
+  position: fixed;
+  right: 0;
+  bottom: 4rem;
+  left: 0;
 }
 .card-row {
   display: flex;
@@ -617,8 +621,9 @@ export default {
   overflow: hidden;
 }
 .fixed-bottom {
-  height: 3rem;
+  height: 4rem;
   padding: 0 2rem;
+  padding-bottom: 1.5rem;
   box-shadow: 0px -8px 9px -10px #bdbdbd;
   -webkit-box-shadow: 0px -8px 9px -10px #bdbdbd;
   -moz-box-shadow: 0px -8px 9px -10px #bdbdbd;
