@@ -429,8 +429,8 @@ export default {
   margin: 0.05rem 0.1rem;
   border-radius: 0.2rem;
   font-weight: bold;
-  font-size: 1.1rem;
-  line-height: 1.1rem;
+  font-size: 1rem;
+  line-height: 1.3rem;
 }
 .card-unit-slot {
   display: flex;
@@ -444,7 +444,7 @@ export default {
   border-radius: 0.2rem;
   font-weight: bold;
   font-size: 1.2rem;
-  line-height: 1.2rem;
+  line-height: 1.4rem;
 }
 .card-slot {
   background-color: lightsteelblue;
