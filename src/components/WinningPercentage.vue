@@ -1,5 +1,5 @@
 <template>
-  <div class="out_wrapper" @touchstart="test">
+  <div class="out_wrapper">
     <div class="WinningPercentage">
       <div class="board">
         <draggable
@@ -308,13 +308,6 @@ export default {
     };
   },
   methods: {
-    test(e) {
-      console.log(e.touches[0].pageX, e.touches[0].pageY);
-       var dragClass = document.getElementsByClassName('dragg-class');
-        dragClass.style = "top: 20rem !important;";
-      //  dragClass.style = "right:2rem !important";
-      
-    },
     clone({ name }) {
       return { name, id: idGlobal++ };
     },
@@ -488,6 +481,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+:root {
+  --top: 10rem;
+}
 .out_wrapper {
   font-family: "Microsoft JhengHei";
   font-weight: bold;
@@ -676,8 +672,7 @@ export default {
   /* margin-bottom: 8rem !important; */
 }
 .dragg-class {
-  /* margin-bottom: 4px !important;  */
-  position: fixed !important;
-  /* top:20rem !important; */
+  margin-top: -1.6rem !important;
+  margin-left: -0.8rem !important;
 }
 </style>
