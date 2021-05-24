@@ -1,5 +1,5 @@
 <template>
-  <div class="out_wrapper">
+  <div class="out_wrapper" @touchstart="test">
     <div class="WinningPercentage">
       <div class="board">
         <draggable
@@ -22,11 +22,11 @@
             <div class="number">{{ unit.name[0] }}</div>
             <div class="color">
               {{
-                unit.name[1]
-                  .replace("s", "♠️")
-                  .replace("c", "♣️")
-                  .replace("h", "♥️")
-                  .replace("d", "♦️")
+              unit.name[1]
+              .replace("s", "♠️")
+              .replace("c", "♣️")
+              .replace("h", "♥️")
+              .replace("d", "♦️")
               }}
             </div>
           </div>
@@ -39,15 +39,10 @@
         variant="warning"
         @dismissed="dismissCountDown = 0"
         @dismiss-count-down="countDownChanged"
-        >輸入有誤</b-alert
-      >
+      >輸入有誤</b-alert>
 
       <div class="player-region">
-        <div
-          class="player"
-          v-for="(player, player_index) in players"
-          :key="player_index"
-        >
+        <div class="player" v-for="(player, player_index) in players" :key="player_index">
           <div class="player-card">
             <draggable
               class="dragArea list-group card-slot"
@@ -71,11 +66,11 @@
                 <div class="number">{{ unit.name[0] }}</div>
                 <div class="color">
                   {{
-                    unit.name[1]
-                      .replace("s", "♠️")
-                      .replace("c", "♣️")
-                      .replace("h", "♥️")
-                      .replace("d", "♦️")
+                  unit.name[1]
+                  .replace("s", "♠️")
+                  .replace("c", "♣️")
+                  .replace("h", "♥️")
+                  .replace("d", "♦️")
                   }}
                 </div>
               </div>
@@ -83,11 +78,12 @@
           </div>
           <div class="result" v-if="!spinner">
             <div class="win text">
-              <span>win</span
-              ><span class="percentage">{{ players_ans[player_index] }}</span>
+              <span>win</span>
+              <span class="percentage">{{ players_ans[player_index] }}</span>
             </div>
             <div class="tie text">
-              <span>tie</span><span class="percentage">{{ tie }}</span>
+              <span>tie</span>
+              <span class="percentage">{{ tie }}</span>
             </div>
           </div>
           <div class="spinner" v-else>
@@ -105,6 +101,8 @@
           @change="log"
           :clone="clone"
           :sort="false"
+          drag-class="dragg-class"
+          :forceFallback="true"
         >
           <div
             class="list-group-item card-unit"
@@ -116,11 +114,11 @@
               <div class="number">{{ unit.name[0] }}</div>
               <div class="color">
                 {{
-                  unit.name[1]
-                    .replace("s", "♠️")
-                    .replace("c", "♣️")
-                    .replace("h", "♥️")
-                    .replace("d", "♦️")
+                unit.name[1]
+                .replace("s", "♠️")
+                .replace("c", "♣️")
+                .replace("h", "♥️")
+                .replace("d", "♦️")
                 }}
               </div>
             </template>
@@ -129,11 +127,11 @@
       </div>
     </div>
 
-    <b-navbar type="light" variant="light" fixed="bottom">
+    <b-navbar type="light" variant="dark" fixed="bottom">
       <div class="container-fluid">
         <b-navbar-nav align="center" :justified="justified">
           <b-nav-item @click="menu_click('reset')" active-class="active">
-            <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon>
+            <b-icon icon="arrow-counterclockwise" aria-hidden="true"></b-icon>
             <!-- <div class="font">重置</div> -->
           </b-nav-item>
         </b-navbar-nav>
@@ -167,7 +165,7 @@ let idGlobal = 100;
 export default {
   name: "WinningPercentage",
   components: {
-    draggable,
+    draggable
   },
   data() {
     return {
@@ -190,7 +188,7 @@ export default {
           { name: "Jc", id: 11 },
           { name: "Qc", id: 12 },
           { name: "Kc", id: 13 },
-          { name: "Ac", id: 1 },
+          { name: "Ac", id: 1 }
         ],
         [
           { name: "2s", id: 22 },
@@ -205,7 +203,7 @@ export default {
           { name: "Js", id: 211 },
           { name: "Qs", id: 212 },
           { name: "Ks", id: 213 },
-          { name: "As", id: 21 },
+          { name: "As", id: 21 }
         ],
         [
           { name: "2d", id: 32 },
@@ -220,7 +218,7 @@ export default {
           { name: "Jd", id: 311 },
           { name: "Qd", id: 312 },
           { name: "Kd", id: 313 },
-          { name: "Ad", id: 31 },
+          { name: "Ad", id: 31 }
         ],
         [
           { name: "2h", id: 42 },
@@ -235,8 +233,8 @@ export default {
           { name: "Jh", id: 411 },
           { name: "Qh", id: 412 },
           { name: "Kh", id: 413 },
-          { name: "Ah", id: 41 },
-        ],
+          { name: "Ah", id: 41 }
+        ]
       ],
       cards_bak: [
         [
@@ -252,7 +250,7 @@ export default {
           { name: "Jc", id: 11 },
           { name: "Qc", id: 12 },
           { name: "Kc", id: 13 },
-          { name: "Ac", id: 1 },
+          { name: "Ac", id: 1 }
         ],
         [
           { name: "2s", id: 22 },
@@ -267,7 +265,7 @@ export default {
           { name: "Js", id: 211 },
           { name: "Qs", id: 212 },
           { name: "Ks", id: 213 },
-          { name: "As", id: 21 },
+          { name: "As", id: 21 }
         ],
         [
           { name: "2d", id: 32 },
@@ -282,7 +280,7 @@ export default {
           { name: "Jd", id: 311 },
           { name: "Qd", id: 312 },
           { name: "Kd", id: 313 },
-          { name: "Ad", id: 31 },
+          { name: "Ad", id: 31 }
         ],
         [
           { name: "2h", id: 42 },
@@ -297,8 +295,8 @@ export default {
           { name: "Jh", id: 411 },
           { name: "Qh", id: 412 },
           { name: "Kh", id: 413 },
-          { name: "Ah", id: 41 },
-        ],
+          { name: "Ah", id: 41 }
+        ]
       ],
       colors: ["black", "black", "red", "red"],
       board: [[], [], [], [], []],
@@ -306,14 +304,21 @@ export default {
       players: [[[], []]],
       players_bak: [[{}, {}]],
       players_ans: [0.0, 0.0, 0.0, 0.0, 0.0],
-      tie: 0.0,
+      tie: 0.0
     };
   },
   methods: {
+    test(e) {
+      console.log(e.touches[0].pageX, e.touches[0].pageY);
+       var dragClass = document.getElementsByClassName('dragg-class');
+        dragClass.style = "top: 20rem !important;";
+      //  dragClass.style = "right:2rem !important";
+      
+    },
     clone({ name }) {
       return { name, id: idGlobal++ };
     },
-    log: function (evt) {
+    log: function(evt) {
       window.console.log(evt);
     },
     board_change(evt, index) {
@@ -433,12 +438,12 @@ export default {
           baseURL: "https://hey300dollars.com",
           url: "/api/poker/calculate/win_rate",
           data: {
-            text: cal_str,
+            text: cal_str
           },
           headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => {
+            "Content-Type": "application/json"
+          }
+        }).then(res => {
           //   console.debug(res);
           if (res.data.type === "text") {
             console.debug("error");
@@ -464,20 +469,20 @@ export default {
               ).toFixed(1)
             );
           }
-          this.tie = result[result.length - 1].contents[1].text.slice(
-            0,
-            parseFloat(
+          this.tie = parseFloat(
+            result[result.length - 1].contents[1].text.slice(
+              0,
               result[result.length - 1].contents[1].text.length - 1
-            ).toFixed(1)
-          );
+            )
+          ).toFixed(1);
 
           this.spinner = false;
         });
 
         return;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -584,7 +589,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   width: 7%;
   min-width: 1rem;
   height: 2rem;
@@ -600,7 +605,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   width: 100%;
   height: 100%;
   padding: 1.5rem 0.7rem;
@@ -644,6 +649,7 @@ export default {
 }
 .font-cal {
   font-weight: bold;
+  color: white;
 }
 .btn .b-icon.bi,
 .nav-link .b-icon.bi,
@@ -651,14 +657,15 @@ export default {
 .dropdown-item .b-icon.bi,
 .input-group-text .b-icon.bi {
   font-size: 160%;
+  color: white;
 }
-.sortable-drag{
+.sortable-drag {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #FFFFFF;
-  width: 7%;
+  background-color: #ffffff;
+  width: 200px;
   height: 2rem;
   padding: 2rem 1.4rem;
   margin: 0.05rem 0.1rem;
@@ -666,5 +673,11 @@ export default {
   font-weight: bold;
   font-size: 1.4rem;
   line-height: 2rem;
+  /* margin-bottom: 8rem !important; */
+}
+.dragg-class {
+  /* margin-bottom: 4px !important;  */
+  position: fixed !important;
+  /* top:20rem !important; */
 }
 </style>
