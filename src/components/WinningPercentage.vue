@@ -22,11 +22,11 @@
             <div class="number">{{ unit.name[0] }}</div>
             <div class="color">
               {{
-              unit.name[1]
-              .replace("s", "♠️")
-              .replace("c", "♣️")
-              .replace("h", "♥️")
-              .replace("d", "♦️")
+                unit.name[1]
+                  .replace("s", "♠️")
+                  .replace("c", "♣️")
+                  .replace("h", "♥️")
+                  .replace("d", "♦️")
               }}
             </div>
           </div>
@@ -39,10 +39,15 @@
         variant="warning"
         @dismissed="dismissCountDown = 0"
         @dismiss-count-down="countDownChanged"
-      >輸入有誤</b-alert>
+        >輸入有誤</b-alert
+      >
 
       <div class="player-region">
-        <div class="player" v-for="(player, player_index) in players" :key="player_index">
+        <div
+          class="player"
+          v-for="(player, player_index) in players"
+          :key="player_index"
+        >
           <div class="player-card">
             <draggable
               class="dragArea list-group card-slot"
@@ -66,11 +71,11 @@
                 <div class="number">{{ unit.name[0] }}</div>
                 <div class="color">
                   {{
-                  unit.name[1]
-                  .replace("s", "♠️")
-                  .replace("c", "♣️")
-                  .replace("h", "♥️")
-                  .replace("d", "♦️")
+                    unit.name[1]
+                      .replace("s", "♠️")
+                      .replace("c", "♣️")
+                      .replace("h", "♥️")
+                      .replace("d", "♦️")
                   }}
                 </div>
               </div>
@@ -114,11 +119,11 @@
               <div class="number">{{ unit.name[0] }}</div>
               <div class="color">
                 {{
-                unit.name[1]
-                .replace("s", "♠️")
-                .replace("c", "♣️")
-                .replace("h", "♥️")
-                .replace("d", "♦️")
+                  unit.name[1]
+                    .replace("s", "♠️")
+                    .replace("c", "♣️")
+                    .replace("h", "♥️")
+                    .replace("d", "♦️")
                 }}
               </div>
             </template>
@@ -165,7 +170,7 @@ let idGlobal = 100;
 export default {
   name: "WinningPercentage",
   components: {
-    draggable
+    draggable,
   },
   data() {
     return {
@@ -188,7 +193,7 @@ export default {
           { name: "Jc", id: 11 },
           { name: "Qc", id: 12 },
           { name: "Kc", id: 13 },
-          { name: "Ac", id: 1 }
+          { name: "Ac", id: 1 },
         ],
         [
           { name: "2s", id: 22 },
@@ -203,7 +208,7 @@ export default {
           { name: "Js", id: 211 },
           { name: "Qs", id: 212 },
           { name: "Ks", id: 213 },
-          { name: "As", id: 21 }
+          { name: "As", id: 21 },
         ],
         [
           { name: "2d", id: 32 },
@@ -218,7 +223,7 @@ export default {
           { name: "Jd", id: 311 },
           { name: "Qd", id: 312 },
           { name: "Kd", id: 313 },
-          { name: "Ad", id: 31 }
+          { name: "Ad", id: 31 },
         ],
         [
           { name: "2h", id: 42 },
@@ -233,8 +238,8 @@ export default {
           { name: "Jh", id: 411 },
           { name: "Qh", id: 412 },
           { name: "Kh", id: 413 },
-          { name: "Ah", id: 41 }
-        ]
+          { name: "Ah", id: 41 },
+        ],
       ],
       cards_bak: [
         [
@@ -250,7 +255,7 @@ export default {
           { name: "Jc", id: 11 },
           { name: "Qc", id: 12 },
           { name: "Kc", id: 13 },
-          { name: "Ac", id: 1 }
+          { name: "Ac", id: 1 },
         ],
         [
           { name: "2s", id: 22 },
@@ -265,7 +270,7 @@ export default {
           { name: "Js", id: 211 },
           { name: "Qs", id: 212 },
           { name: "Ks", id: 213 },
-          { name: "As", id: 21 }
+          { name: "As", id: 21 },
         ],
         [
           { name: "2d", id: 32 },
@@ -280,7 +285,7 @@ export default {
           { name: "Jd", id: 311 },
           { name: "Qd", id: 312 },
           { name: "Kd", id: 313 },
-          { name: "Ad", id: 31 }
+          { name: "Ad", id: 31 },
         ],
         [
           { name: "2h", id: 42 },
@@ -295,8 +300,8 @@ export default {
           { name: "Jh", id: 411 },
           { name: "Qh", id: 412 },
           { name: "Kh", id: 413 },
-          { name: "Ah", id: 41 }
-        ]
+          { name: "Ah", id: 41 },
+        ],
       ],
       colors: ["black", "black", "red", "red"],
       board: [[], [], [], [], []],
@@ -304,17 +309,23 @@ export default {
       players: [[[], []]],
       players_bak: [[{}, {}]],
       players_ans: [0.0, 0.0, 0.0, 0.0, 0.0],
-      tie: 0.0
+      tie: 0.0,
     };
   },
   methods: {
     clone({ name }) {
       return { name, id: idGlobal++ };
     },
-    log: function(evt) {
+    log: function (evt) {
       window.console.log(evt);
     },
     board_change(evt, index) {
+      //   if (index === 4) {
+      //     if (this.board[3].length === 0) {
+      //       this.board[index].splice(0);
+      //       return;
+      //     }
+      //   }
       this.board[index].splice(0);
       this.board[index].splice(0, 1, evt.added.element);
       this.checkCard(evt.added.element.name, this.board_bak[index]);
@@ -402,28 +413,46 @@ export default {
           this.board[4].length === 0
         ) {
         } else {
-          if (
-            this.board[0].length === 1 &&
-            this.board[1].length === 1 &&
-            this.board[2].length === 1
-          ) {
-            hasBoard = true;
-            cal_str =
-              cal_str +
-              "-b " +
-              this.board[0][0].name +
-              " " +
-              this.board[1][0].name +
-              " " +
-              this.board[2][0].name;
-
-            if (this.board[3].length === 1) {
-              cal_str = cal_str + " " + this.board[3][0].name;
-              if (this.board[4].length === 1) {
-                cal_str = cal_str + " " + this.board[4][0].name;
-              }
+          cal_str = cal_str + "-b";
+          let check = 0;
+          for (let b = 0; b < this.board.length; b++) {
+            if (this.board[b].length === 1) {
+              check++;
+              cal_str = cal_str + " " + this.board[b][0].name;
             }
           }
+          if (check < 3) {
+            this.showAlert();
+            this.spinner = false;
+            return;
+          }
+          hasBoard = true;
+          //   if (
+          //     this.board[0].length === 1 &&
+          //     this.board[1].length === 1 &&
+          //     this.board[2].length === 1
+          //   ) {
+          //     hasBoard = true;
+          //     cal_str =
+          //       cal_str +
+          //       "-b " +
+          //       this.board[0][0].name +
+          //       " " +
+          //       this.board[1][0].name +
+          //       " " +
+          //       this.board[2][0].name;
+
+          //     if (this.board[3].length === 1) {
+          //       cal_str = cal_str + " " + this.board[3][0].name;
+          //       if (this.board[4].length === 1) {
+          //         cal_str = cal_str + " " + this.board[4][0].name;
+          //       }
+          //     }
+          //   } else {
+          //     this.showAlert();
+          //     this.spinner = false;
+          //     return;
+          //   }
         }
         // console.debug(cal_str);
         axios({
@@ -431,13 +460,13 @@ export default {
           baseURL: "https://hey300dollars.com",
           url: "/api/poker/calculate/win_rate",
           data: {
-            text: cal_str
+            text: cal_str,
           },
           headers: {
-            "Content-Type": "application/json"
-          }
-        }).then(res => {
-          //   console.debug(res);
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
+          console.debug(res);
           if (res.data.type === "text") {
             console.debug("error");
             this.showAlert();
@@ -468,14 +497,13 @@ export default {
               result[result.length - 1].contents[1].text.length - 1
             )
           ).toFixed(1);
-
           this.spinner = false;
         });
 
         return;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -621,6 +649,11 @@ export default {
   justify-content: flex-start;
   align-items: center;
   overflow: hidden;
+}
+.serio {
+  position: absolute;
+  font-size: 2rem;
+  color: #f0f8ff4d;
 }
 .fixed-bottom {
   height: 4rem;
