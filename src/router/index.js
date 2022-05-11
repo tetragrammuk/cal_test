@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import startTable from '@/components/startTable'
+import accounting from '@/components/accounting'
 import calculator from '@/components/calculator'
 import bind from '@/components/bind'
 import WinningPercentage from '@/components/WinningPercentage'
@@ -19,6 +21,16 @@ const router = new Router({
 			path: '/HelloWorld',
 			name: 'HelloWorld',
 			component: HelloWorld
+		},
+		{
+			path: '/startTable',
+			name: 'startTable',
+			component: startTable
+		},
+		{
+			path: '/accounting',
+			name: 'accounting',
+			component: accounting
 		},
 		{
 			path: '/WinningPercentage',
